@@ -7,6 +7,7 @@ public class Person implements Contract {
     protected String name;
     protected Boolean moving = false;
     protected Boolean flying = false;
+    protected int size = 10;
 
     // Getters
     public int getX() {
@@ -23,6 +24,10 @@ public class Person implements Contract {
 
     public Boolean getMoving() {
         return this.moving;
+    }
+
+    public int getSize() {
+        return this.size;
     }
 
     // Grabs item; Maybe adds it to inventory - Can't hold more than two objects - You only have two hands (:
@@ -70,20 +75,22 @@ public class Person implements Contract {
 
     @Override
     public Number shrink() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'shrink'");
+        System.out.println("Shrinking down!");
+        size /= 2;
+        return size;
     }
 
     @Override
     public Number grow() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'grow'");
-    }
+        System.out.println("Growing!");
+        size *= 2;
+        return size;
+        }
 
     @Override
     public void rest() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'rest'");
+        System.out.println("Phew! Time to take a break.");
+        moving = false;
     }
 
     // Person goes back to original size, coordinates, and stops moving
@@ -92,6 +99,7 @@ public class Person implements Contract {
         this.x = 0;
         this.y = 0;
         direction = "Not moving.";
+        this.size = 10;
     }
 
     public static void main(String[] args) {
@@ -103,7 +111,13 @@ public class Person implements Contract {
         me.grab("Waterbottle");
         me.drop("Waterbottle");
         me.use("Sword");
+        System.out.println(me.size);
+        me.grow();
+        me.grow();
+        me.shrink();
+        System.out.println(me.size);
         me.undo();
         System.out.println("You are located at: " + me.getX() + ", " + me.getY());
+        System.out.println(me.size);
     }
 }
