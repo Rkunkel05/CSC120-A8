@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Person implements Contract {
     // Location
     protected int x, y;
@@ -8,6 +11,12 @@ public class Person implements Contract {
     protected Boolean moving = false;
     protected Boolean flying = false;
     protected int size = 10;
+    protected List<String> inventory;
+
+    // Constructor
+    public Person() {
+        this.inventory = new ArrayList<>();
+    }
 
     // Getters
     public int getX() {
@@ -30,15 +39,25 @@ public class Person implements Contract {
         return this.size;
     }
 
-    // Grabs item; Maybe adds it to inventory - Can't hold more than two objects - You only have two hands (:
+    // Grabs item; Maybe adds it to inventory
     public void grab(String item) {
-        System.out.println(item + " grabbed!");
+        if (inventory.size() <= 10) {
+            System.out.println(item + " grabbed!");
+            inventory.add(item);
+        } else {
+            throw new RuntimeException("You don't have room in your inventory! Try dropping an item first.");
+        }
     }
 
     // Drops item; Checks if in inventory + removes it from inventory
     public String drop(String item) {
-        System.out.println(item + " dropped!");
-        return item;
+        if (inventory.contains(item)) {
+            System.out.println(item + " dropped!");
+            inventory.remove(item);
+            return item;
+        } else {
+             throw new RuntimeException(item + " is not in your inventory!");
+        }
     }
 
     public void examine(String item) {
@@ -47,7 +66,11 @@ public class Person implements Contract {
 
     // Checks if you have item; Uses it if so 
     public void use(String item) {
-        System.out.println(item + " used!");
+        if (inventory.contains(item)) {
+            System.out.println(item + " used!");
+        } else {
+            System.out.println(item + " is not in your inventory, so you can't use it!");
+        }
     }
 
     public boolean walk(String direction) {
@@ -73,21 +96,21 @@ public class Person implements Contract {
         }
     }
 
-    @Override
+    // Changes size by 1/2
     public Number shrink() {
         System.out.println("Shrinking down!");
         size /= 2;
         return size;
     }
 
-    @Override
+    // Changes size by x2
     public Number grow() {
         System.out.println("Growing!");
         size *= 2;
         return size;
         }
 
-    @Override
+    // Sets moving to false
     public void rest() {
         System.out.println("Phew! Time to take a break.");
         moving = false;
@@ -104,7 +127,6 @@ public class Person implements Contract {
 
     public static void main(String[] args) {
         Person me = new Person();
-        System.out.println(me);
         System.out.println("You are located at: " + me.getX() + ", " + me.getY());
         me.walk("North");
         me.fly(100,500);
