@@ -1,16 +1,11 @@
 Use this file to record your reflection on this assignment.
 
 - Tell me about your class! What does it represent?
-**DETAILED DESCRIPTION + WHAT IT DOES**
-When reading through the list of actions, I thought of them as all being something a human might do, so I created a "Person" class to complete all of them. Thus, the person is able to fly, change in size, pick up/drop objects, and more. 
+When reading through the list of actions in Contract.java, I viewed them as all being something a human might do, so I created a "Person" class to complete all of them. Thus, the person is able to fly, change in size, pick up/drop objects, and more. The Person class has an inventory of size two (just like how most people have two hands to grab things with) and is able to carry up to two items at a time. Additionally, the Person class interacts with items created in Item.java to complete various actions. 
 
 - What additional methods (if any) did you implement alongside those listed in the interface?
-* land()
-* Various getters (getX, getY, getMoving, etc.)
-* Item.java
+Alongside those listed in the interface, I added a land method, various getters, a nicely formatted printInventory(), and another class, Item, to create items for the person to interact with. 
 
 
 - What worked, what didn't, what advice would you give someone taking this course in the future?
-* Starting off with breaking everything down and creating a very basic foundation
-* Building on top of that foundation
-* Taking breaks instead of tackling it all in one sitting!
+Given how open this assignment was, I started with creating a very bare-bones foundation to work off of. From there, I brainstormed ideas for things to add on to the foundation and began building up the complexity in my code. Layering complexity like this was very useful, because it helped me to ensure that everything in my code worked before I added on new things. Additionally, when I first started looking at this assignment I was a little overwhelemed by how open it was. First fulfilling the basic requirements in a bare-bones manner helped me find my footing and determine where I wanted to go with this project. To a student taking this course in the future, I would highly suggest taking a similar approach. Additionally, take breaks and chunk your assignment into parts instead of tackling it all in one sitting!
