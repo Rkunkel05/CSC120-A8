@@ -19,39 +19,30 @@ public class Person implements Contract {
     }
 
     /**
-     * // Getter for x
+     * // Various getters
      */
     public int getX() {
         return this.x;
     }
 
-    /**
-     * // Getter for y
-     */
     public int getY() {
         return this.y;
     }
 
-    /**
-     * // Getter for whether or not moving is true/false
-     */
     public Boolean getMoving() {
         return this.moving;
     }
 
-    /**
-     * // Getter for size
-     */
     public int getSize() {
         return this.size;
     }
 
     /**
-     * // "Grabs" item and adds it to the inventory if room. Otherwise throws error
-     * @param String item is the item to be added
+     * // Checks if there is space in the inventory, and adds the item to it. Otherwise throws error 
+     * @param String itemName is the item to be added
      */
     public void grab(String itemName) {
-        if (inventory.size() <= 2) {
+        if (inventory.size() <= 1) {
             System.out.println(itemName + " grabbed!");
             inventory.add(new Item(itemName, "", ""));
         } else {
@@ -60,8 +51,8 @@ public class Person implements Contract {
     }
 
     /**
-     * // "Grabs" item and removes it to the inventory if it is already there. Otherwise throws error
-     * @param String item is the item to be removed
+     * // Checks if item is in inventory and removes it. Otherwise throws error
+     * @param String itemName is the item to be removed
      */
     public String drop(String itemName) {
         for (Item item : inventory) {
@@ -75,25 +66,25 @@ public class Person implements Contract {
     }
 
     /**
-     * // "Examines" item
-     * @param String item is the item to be examined
+     * // Prints the description of the item
+     * @param String description is the item's associated description 
      */
     public void examine(String description) {
         System.out.println("Hm... " + description + " How interesting!");
     }
 
     /**
-     * // "Uses" item if it is in inventory. Otherwise throws error
-     * @param String item is the item to be used
+     * // Prints the action of the item 
+     * @param String action is the item's associated action
      */
     public void use(String action) {
         System.out.println(action);
     }
 
     /**
-     * // Makes the person "walk" if moving is false. Otherwise throws error
+     * // Updates moving to true if the person is not already walking. Otherwise throws error
      * @param String direction is the direction to move in
-     * @return boolean updates direction to true
+     * @return boolean moving updates moving to true
      */
     public boolean walk(String direction) {
         if (moving == false) {
@@ -106,10 +97,10 @@ public class Person implements Contract {
     }
 
     /**
-     * // Fly to the specified coordinates if not already flying
+     * // "Fly" to the specified coordinates if not already flying
      * @param int x is the x-coordinate to fly to
      * @param int y is the y-coordinate to fly to
-     * @return boolean updates to indicate that you are flying
+     * @return boolean flying indicates if the person is flying
      */
     public boolean fly(int x, int y) {
         if (flying == false) {
@@ -125,17 +116,21 @@ public class Person implements Contract {
     }
 
     /**
-     * // Updates flying to false
-     * @return boolean updates to indicate that you not  are flying
+     * // "Landing" - Updates flying to false
+     * @return boolean flying indicates that the person is not flying 
      */
     public boolean land() {
-        flying = false;
-        return flying;
+        if (flying == true) {
+            flying = false;
+            return flying;
+        } else {
+            throw new RuntimeException("You are not flying!");
+        }
     }
 
    /**
      * // Shrinks the size of the person by 1/2
-     * @return Number updates the size of the person
+     * @return Number size updates the size of the person
      */
     public Number shrink() {
         System.out.println("Shrinking down!");
@@ -145,7 +140,7 @@ public class Person implements Contract {
 
     /**
      * // Grows the size of the person by x2
-     * @return Number updates the size of the person
+     * @return Number size updates the size of the person
      */
     public Number grow() {
         System.out.println("Growing!");
@@ -162,7 +157,7 @@ public class Person implements Contract {
     }
 
     /**
-     * // Returns the state of the person back to normal
+     * // Returns the state of the person back to the default settings
      */
     public void undo() {
         System.out.println("Undoing all actions...");
@@ -177,26 +172,59 @@ public class Person implements Contract {
         }
     }
 
+    public void printInventory() {
+        System.out.println("\n");
+        System.out.println("*********");
+        System.out.println("INVENTORY:");
+        if (inventory.size() == 0) {
+            System.out.println("Empty");
+            System.out.println("*********");
+            System.out.println("\n");
+        } else {
+            for (Item item : inventory) {
+                System.out.println("+ " + item);
+            }
+            System.out.println("*********");
+            System.out.println("\n");
+        }
+    }
+
     public static void main(String[] args) {
+        // Creating person and items 
         Person me = new Person();
         Item Waterbottle = new Item("Waterbottle", "Something to drink from!", "Drinking... Refreshing!");
         Item Sword = new Item("Sword", "It's dangerous to go alone. Take this!", "Swish!");
+        Item Wand = new Item("Wand", "Cast a spell with this!", "Shazam!");
+        // Details about person 
         System.out.println("You are located at: " + me.getX() + ", " + me.getY());
+        me.printInventory();
+        // Moving
         me.walk("North");
         me.fly(100,500);
         me.land();
+        System.out.println("\n");
+        // Interacting with waterbottle 
         me.examine(Waterbottle.getDescription());
         me.grab(Waterbottle.getName());
+        me.printInventory();
         me.drop(Waterbottle.getName());
+        // Interaction with sword 
         me.grab(Sword.getName());
+        me.grab(Wand.getName());
+        me.printInventory();
         me.use(Sword.getAction());
-        System.out.println(me.size);
+        System.out.println("\n");
+        // Changing size
+        System.out.println("You are curently size: " + me.size + ".");
         me.grow();
         me.grow();
         me.shrink();
-        System.out.println(me.size);
+        System.out.println("You are curently size: " + me.size + ".");
+        System.out.println("\n");
+        // Undoing everything 
         me.undo();
         System.out.println("You are located at: " + me.getX() + ", " + me.getY());
-        System.out.println(me.size);
+        System.out.println("You are curently size: " + me.size + ".");
+        me.printInventory();
     }
 }
