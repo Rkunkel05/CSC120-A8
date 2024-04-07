@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Iterator;
 
 public class Person implements Contract {
     // Qualities
@@ -8,7 +9,7 @@ public class Person implements Contract {
     protected Boolean moving = false;
     protected Boolean flying = false;
     protected int size = 10;
-    protected List<String> inventory;
+    protected List<Item> inventory;
 
     /**
      * // Creates a new person with an empty inventory
@@ -49,12 +50,12 @@ public class Person implements Contract {
      * // "Grabs" item and adds it to the inventory if room. Otherwise throws error
      * @param String item is the item to be added
      */
-    public void grab(String item) {
-        if (inventory.size() <= 10) {
-            System.out.println(item + " grabbed!");
-            inventory.add(item);
+    public void grab(String itemName) {
+        if (inventory.size() <= 2) {
+            System.out.println(itemName + " grabbed!");
+            inventory.add(new Item(itemName, "", ""));
         } else {
-            throw new RuntimeException("You don't have room in your inventory! Try dropping an item first.");
+            throw new RuntimeException("Both of your hands are full! Try dropping an item first.");
         }
     }
 
@@ -62,34 +63,31 @@ public class Person implements Contract {
      * // "Grabs" item and removes it to the inventory if it is already there. Otherwise throws error
      * @param String item is the item to be removed
      */
-    public String drop(String item) {
-        if (inventory.contains(item)) {
-            System.out.println(item + " dropped!");
-            inventory.remove(item);
-            return item;
-        } else {
-             throw new RuntimeException(item + " is not in your inventory!");
+    public String drop(String itemName) {
+        for (Item item : inventory) {
+            if (item.getName().equals(itemName)) {
+                inventory.remove(item);
+                return itemName + " dropped!";
+        
         }
+    }
+        throw new RuntimeException(itemName + " is not in your inventory!");
     }
 
     /**
      * // "Examines" item
      * @param String item is the item to be examined
      */
-    public void examine(String item) {
-        System.out.println("Hm... This is a " + item +". How interesting!");
+    public void examine(String description) {
+        System.out.println("Hm... " + description + " How interesting!");
     }
 
     /**
      * // "Uses" item if it is in inventory. Otherwise throws error
      * @param String item is the item to be used
      */
-    public void use(String item) {
-        if (inventory.contains(item)) {
-            System.out.println(item + " used!");
-        } else {
-            throw new RuntimeException(item + " is not in your inventory, so you can't use it!");
-        }
+    public void use(String action) {
+        System.out.println(action);
     }
 
     /**
@@ -172,21 +170,26 @@ public class Person implements Contract {
         this.y = 0;
         direction = "Not moving.";
         this.size = 10;
-        for (String item : inventory) {
-            inventory.remove(item);
+        Iterator<Item> iterator = inventory.iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            iterator.remove();
         }
     }
 
     public static void main(String[] args) {
         Person me = new Person();
+        Item Waterbottle = new Item("Waterbottle", "Something to drink from!", "Drinking... Refreshing!");
+        Item Sword = new Item("Sword", "It's dangerous to go alone. Take this!", "Swish!");
         System.out.println("You are located at: " + me.getX() + ", " + me.getY());
         me.walk("North");
         me.fly(100,500);
         me.land();
-        me.grab("Waterbottle");
-        me.drop("Waterbottle");
-        me.grab("Sword");
-        me.use("Sword");
+        me.examine(Waterbottle.getDescription());
+        me.grab(Waterbottle.getName());
+        me.drop(Waterbottle.getName());
+        me.grab(Sword.getName());
+        me.use(Sword.getAction());
         System.out.println(me.size);
         me.grow();
         me.grow();
