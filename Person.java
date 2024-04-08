@@ -6,9 +6,9 @@ public class Person implements Contract {
     // Qualities
     protected int x, y;
     protected String direction;
-    protected Boolean moving = false;
-    protected Boolean flying = false;
-    protected int size = 10;
+    protected Boolean moving;
+    protected Boolean flying;
+    protected int size = 5;
     protected List<Item> inventory;
 
     /**
@@ -16,6 +16,8 @@ public class Person implements Contract {
      */
     public Person() {
         this.inventory = new ArrayList<>();
+        moving = false;
+        flying = false;
     }
 
     /**
@@ -97,7 +99,7 @@ public class Person implements Contract {
     }
 
     /**
-     * // "Fly" to the specified coordinates if not already flying
+     * // "Fly" to the specified coordinates if not already flying. Otherwise throws error if flying is already true
      * @param int x is the x-coordinate to fly to
      * @param int y is the y-coordinate to fly to
      * @return boolean flying indicates if the person is flying
@@ -116,7 +118,7 @@ public class Person implements Contract {
     }
 
     /**
-     * // "Landing" - Updates flying to false
+     * // "Landing" - Updates flying to false. Otherwise throws error if flying is not true
      * @return boolean flying indicates that the person is not flying 
      */
     public boolean land() {
@@ -133,8 +135,8 @@ public class Person implements Contract {
      * @return Number size updates the size of the person
      */
     public Number shrink() {
-        System.out.println("Shrinking down!");
         size /= 2;
+        System.out.println("Shrinking! You are now size " + size);
         return size;
     }
 
@@ -143,8 +145,8 @@ public class Person implements Contract {
      * @return Number size updates the size of the person
      */
     public Number grow() {
-        System.out.println("Growing!");
         size *= 2;
+        System.out.println("Growing! You are now size " + size);
         return size;
         }
 
@@ -164,7 +166,7 @@ public class Person implements Contract {
         this.x = 0;
         this.y = 0;
         direction = "Not moving.";
-        this.size = 10;
+        this.size = 5;
         Iterator<Item> iterator = inventory.iterator();
         while (iterator.hasNext()) {
             iterator.next();
@@ -207,7 +209,8 @@ public class Person implements Contract {
         me.examine(Waterbottle.getDescription());
         me.grab(Waterbottle.getName());
         me.printInventory();
-        me.drop(Waterbottle.getName());
+        System.out.println(me.drop(Waterbottle.getName()));
+        System.out.println("\n");
         // Interaction with sword 
         me.grab(Sword.getName());
         me.grab(Wand.getName());
@@ -219,7 +222,6 @@ public class Person implements Contract {
         me.grow();
         me.grow();
         me.shrink();
-        System.out.println("You are curently size: " + me.size + ".");
         System.out.println("\n");
         // Undoing everything 
         me.undo();
